@@ -29,3 +29,5 @@
 ### Documentation
 > * Mock-ups
 > * Database schema
+
+![](images/rocket.jpg)
