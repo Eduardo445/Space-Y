@@ -24,7 +24,7 @@
 
 ### Dependencies
 > * SQL database
-> * Unspash API
+> * Unsplash API
 
 ### Documentation
 > * Mock-ups
