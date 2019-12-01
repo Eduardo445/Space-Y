@@ -2,7 +2,7 @@
 
 > ## *Internet Programming*
 
-"One letter shifted from SpaceX, one giant leap for commercial space exploration."
+<i>"One letter shifted from SpaceX, one giant leap for commercial space exploration."</i>
 
 ### Features
 > Some standard features can include:
