@@ -5,7 +5,7 @@
 <i>"One letter shifted from SpaceX, one giant leap for commercial space exploration."</i>
 
 ### Features
-> Some standard features can include:
+> Standard features include:
 > * There is a "user" section in which users can search and filter data using at least three fields
 > * Users can add items to a shopping cart
 > * Users can see all items in their cart
