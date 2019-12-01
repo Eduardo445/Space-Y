@@ -1,0 +1,25 @@
+{
+  "name": "building-food",
+  "version": "1.0.0",
+  "description": "CST 336 Internet Programming Final Project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eduardo445/Building-Food.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Eduardo445/Building-Food/issues"
+  },
+  "homepage": "https://github.com/Eduardo445/Building-Food#readme",
+  "dependencies": {
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "mysql": "^2.17.1",
+    "nodemon": "^2.0.1"
+  }
+}
