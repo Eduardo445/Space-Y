@@ -81,7 +81,7 @@ app.get("/updateItem", async function(req,res){
     let itemInfo = await getItemInfo(req.query.engineId);
     console.log(itemInfo);
     res.render("updateItem", {"itemInfo":itemInfo});
-});//add item
+});//update item
 
 app.post("/updateItem", async function(req,res){
     console.log(req.body);
@@ -104,7 +104,7 @@ app.get("/deleteItem", async function(req,res){
     console.log(message);
     let itemList = await getItemList();
     res.render("admin", {"itemList":itemList});
-});//add item
+});//delete item
 
 // app.get("/dbTest", function(req, res){
 //     let conn = dbConnection();
