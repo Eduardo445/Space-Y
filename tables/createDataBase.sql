@@ -26,12 +26,12 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `destination` (
-  `destinationId` int(11) NOT NULL,
+  `destinationId` int(11) NOT NULL AUTO_INCREMENT,
   `destination` varchar(25) NOT NULL,
   `engine_num` int(11) NOT NULL,
   `engineReq` int(11) NOT NULL,
   PRIMARY KEY (`destinationId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=100;
 
 --
 -- Dumping data for table `destination`
@@ -65,7 +65,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `engine` (
-  `engineId` int(11) NOT NULL,
+  `engineId` int(11) NOT NULL AUTO_INCREMENT,
   `upgrade` varchar(50) NOT NULL,
   `engineCost` int(11) NOT NULL,
   `description` varchar(50) NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `engine` (
   `material` varchar(50) NOT NULL,
   `payloadReq` int(11) NOT NULL,
   PRIMARY KEY (`engineId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=100;
 
 --
 -- Dumping data for table `engine`
@@ -115,12 +115,12 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `payload` (
-  `payloadId` int(11) NOT NULL,
+  `payloadId` int(11) NOT NULL AUTO_INCREMENT,
   `payload` int(11) NOT NULL,
   `payloadCost` int(11) NOT NULL,
   `engineReq` int(11) NOT NULL,
   PRIMARY KEY (`payloadId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=100;
 
 --
 -- Dumping data for table `payload`
