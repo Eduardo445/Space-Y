@@ -12,21 +12,18 @@
         <!--Add in default values taken from database-->
         
         <form method="POST"> 
-            Engine part: <input type="text" name="engine"><br><br>
-            Cost: <input type="number" name="cost"><br><br>
-            Description: <input type="text" name="description"><br><br>
-            Weight: <input type="number" name="weight"><br><br>
-            Material: <input type="text" name="material"><br><br>
-            Destinaton:<br>
-            <input type="radio" name="destination" value="1">Orbital transfer
-            <input type="radio" name="destination" value="2">Low Earth orbit
-            <input type="radio" name="destination" value="3">Inter solar system<br><br>
+            Engine part: <input type="text" name="engine" value="<%=itemInfo.upgrade%>"><br><br>
+            Cost: <input type="text" name="cost" value="<%=itemInfo.engineCost%>"><br><br>
+            Description: <input type="text" name="description" value="<%=itemInfo.description%>"><br><br>
+            Weight: <input type="text" name="weight" value="<%=itemInfo.weight%>"><br><br>
+            Material: <input type="text" name="material" value="<%=itemInfo.material%>"><br><br>
             Payload:<br>
-            <input type="radio" name="payload" value="1">100000
-            <input type="radio" name="payload" value="2">75000
-            <input type="radio" name="payload" value="3">50000
-            <input type="radio" name="payload" value="4">25000<br><br>
+            <input type="radio" name="payload" value="1" <%=itemInfo.payloadReq == "1" ? "checked" : "" %>>100000
+            <input type="radio" name="payload" value="2" <%=itemInfo.payloadReq == "2" ? "checked" : "" %>>75000
+            <input type="radio" name="payload" value="3" <%=itemInfo.payloadReq == "3" ? "checked" : "" %>>50000
+            <input type="radio" name="payload" value="4" <%=itemInfo.payloadReq == "4" ? "checked" : "" %>>25000<br><br>
             
+            <input type="hidden" name="engineId" value="<%=itemInfo.engineId%>">
             <button>Update Item</button>
             <%= typeof(message) != "undefined" ? message : "" %>
         </form>

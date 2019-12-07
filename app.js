@@ -33,9 +33,11 @@ app.post("/check", function(req, res){
     
 });//verification
 
-app.get("/admin", function(req, res){
+app.get("/admin", async function(req, res){
     
-    res.render("admin");
+    let itemList = await getItemList();
+    //console.log(itemList);
+    res.render("admin", {"itemList":itemList});
     
 });//admin
 
@@ -63,11 +65,11 @@ app.get("/addItem", function(req,res){
     res.render("addItem");
 });//add item
 
-app.post("/addItem", function(req, res){
-    console.log(req.body);
-    
+app.post("/addItem", async function(req, res){
+    //console.log(req.body);
+    let rows = await insertItem(req.body);
     let message = "Item was NOT added to the system";
-    if(false){
+    if(rows.affectedRows > 0){
         message = "Item was added to the system";
     }
     
@@ -75,22 +77,33 @@ app.post("/addItem", function(req, res){
 });//add item post
 
 app.get("/updateItem", async function(req,res){
-    res.render("updateItem")
+    
+    let itemInfo = await getItemInfo(req.query.engineId);
+    console.log(itemInfo);
+    res.render("updateItem", {"itemInfo":itemInfo});
 });//add item
 
-app.post("/updateItem", function(req,res){
+app.post("/updateItem", async function(req,res){
     console.log(req.body);
-    
+    let rows = await updateItem(req.body);
+    let itemInfo = req.body;
     let message = "Item was NOT updated";
-    if(false){
+    if(rows.affectedRows > 0){
         message = "Item was updated successfully";
     }
-    res.render("updateItem", {"message":message});
+    res.render("updateItem", {"message":message, "itemInfo": itemInfo});
 });//update item post
 
-app.get("/deleteItem", function(req,res){
-    let message = "Item was deleted from the database";
-    res.render("admin");
+app.get("/deleteItem", async function(req,res){
+    let rows = await deleteItem(req.query.engineId);
+    
+    let message = "Item was NOT deleted from the database";
+    if(rows.affectedRows > 0){
+        message = "Item deleted successfully";
+    }
+    console.log(message);
+    let itemList = await getItemList();
+    res.render("admin", {"itemList":itemList});
 });//add item
 
 // app.get("/dbTest", function(req, res){
@@ -113,19 +126,130 @@ app.get("/deleteItem", function(req,res){
 // });//dbTest
 
 //values in red must be updated
-// function dbConnection(){
+function dbConnection(){
 
-//     let conn = mysql.createConnection({
-//         host: "cst336db.space",
-//         user: "cst336_dbUser5",
-//         password: "clmxkg",
-//         database:"cst336_db5"
-//     });//createConnection
+    let conn = mysql.createConnection({
+        host: "cst336db.space",
+        user: "cst336_dbUser5",
+        password: "clmxkg",
+        database:"cst336_db5"
+    });//createConnection
 
-//     return conn;
-// }
+    return conn;
+}
 
 //running server
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("Express server is running...");
 });
+
+
+function getItemList(){
+    let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err){
+            if(err) throw(err);
+            console.log("Connected!");
+            
+            let sql = `SELECT upgrade, engineId FROM engine ORDER BY upgrade`;
+            
+            conn.query(sql, function(err, rows, fields){
+                if(err) throw(err);
+                conn.end();
+                resolve(rows);
+            });//connect
+        });//connect
+    });//promise
+}
+
+
+function insertItem(body){
+    let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err){
+            if(err) throw(err);
+            console.log("Connected!");
+            
+            let sql = `INSERT INTO engine
+                        (upgrade, engineCost, description, weight, material, payloadReq)
+                        VALUES (?,?,?,?,?,?)`;
+            
+            let params = [body.engine, body.cost, body.description, 
+                        body.weight, body.material, body.payload];
+            
+            console.log(params);
+            
+            conn.query(sql, params, function(err, rows, fields){
+                if(err) throw(err);
+                conn.end()
+                resolve(rows);
+            })//connect
+        })//connect
+    })//promise
+}
+
+function updateItem(body){
+    let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err){
+            if(err) throw(err);
+            console.log("Connected!");
+            
+            let sql = `UPDATE engine
+                        SET upgrade = ?, engineCost = ?, description = ?, weight = ?,
+                        material = ?, payloadReq = ?
+                        WHERE engineId = ?`;
+            
+            let params = [body.engine, body.cost, body.description, 
+                        body.weight, body.material, body.payload, body.engineId];
+            
+            conn.query(sql, params, function(err, rows, fields){
+                if(err) throw(err);
+                conn.end()
+                resolve(rows);
+            })//connect
+        })//connect
+    })//promise
+}
+
+function getItemInfo(engineId){
+    let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err){
+            if(err) throw(err);
+            console.log("Connected!");
+            
+            let sql = `SELECT * FROM engine WHERE engineId = ?`;
+            
+            conn.query(sql, [engineId], function(err, rows, fields){
+                if(err) throw(err);
+                conn.end()
+                resolve(rows[0]);
+            })//connect
+        })//connect
+    })//promise
+}
+
+function deleteItem(engineId){
+    let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err){
+            if(err) throw(err);
+            console.log("Connected!");
+            
+            let sql = `DELETE FROM engine WHERE engineId = ?`;
+            
+            conn.query(sql, [engineId], function(err, rows, fields){
+                if(err) throw(err);
+                conn.end()
+                resolve(rows);
+            })//connect
+        })//connect
+    })//promise
+}
+
