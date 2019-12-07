@@ -30,4 +30,4 @@
 > * Mock-ups
 > * Database schema
 
-![](images/rockets.png)
+![](images/background.jpg)
