@@ -55,6 +55,7 @@
                 
             </select>
             
+            <br>
             <button> Search! </button>
             
             <table border="1" cellpadding="3" id="printTable">
@@ -69,7 +70,6 @@
                 	</tr>
             	
                 	<% for(var i = 0; i < displaying.length; i++) { %>
-                        <option><%=i.material%></option>
                         <tr>
             		        <td><%= engineINFO[displaying[i]].upgrade %></td>
             		        <td><%= engineINFO[displaying[i]].engineCost %></td>		
