@@ -116,10 +116,10 @@ app.get("/deleteItem", function(req,res){
 // function dbConnection(){
 
 //     let conn = mysql.createConnection({
-//         host: "",
-//         user: "",
-//         password: "",
-//         database:""
+//         host: "cst336db.space",
+//         user: "cst336_dbUser5",
+//         password: "clmxkg",
+//         database:"cst336_db5"
 //     });//createConnection
 
 //     return conn;
