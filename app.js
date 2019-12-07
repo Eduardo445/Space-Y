@@ -36,6 +36,19 @@ app.get("/logout", function(req, res){
 });//admin
 
 
+app.get("/addItem", function(req,res){
+    res.render("addItem");
+});//add item
+
+app.get("/updateItem", async function(req,res){
+    res.render("updateItem")
+});//add item
+
+app.get("/deleteItem", function(req,res){
+    let message = "Item was deleted from the database";
+    res.render("admin");
+});//add item
+
 // app.get("/dbTest", function(req, res){
 //     let conn = dbConnection();
     
