@@ -22,10 +22,7 @@
         <br /><br />
     
         <form method="POST" id="info">
-            <!--Keyword1: <input type="text" name="key1" placeholder="Keyword"> <br>-->
             
-            <!--Keyword2: <input type="text" name="key2" placeholder="Keyword"> <br>-->
-        
             Category: For the database values
             <select name="material">
                 <option value="">Select One</option>
@@ -41,8 +38,8 @@
             <select name="price">
                 <option value="">Select One</option>
                 
-                <% prices.forEach(function(i){ %>
-                    <option><%=i.engineCost%></option>
+                <% prices.forEach(function(j){ %>
+                    <option><%=j.engineCost%></option>
                 <% }); %>
                 
             </select>
@@ -52,8 +49,8 @@
             <select name="weight">
                 <option value="">Select One</option>
                 
-                <% weights.forEach(function(i){ %>
-                    <option><%=i.weight%></option>
+                <% weights.forEach(function(k){ %>
+                    <option><%=k.weight%></option>
                 <% }); %>
                 
             </select>
@@ -91,8 +88,6 @@
         <form action="/buildShip">
             <button> Build Another </button>
         </form>
-        
-            
 
     </body>
 </html>
