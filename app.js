@@ -129,3 +129,25 @@ app.get("/deleteItem", function(req,res){
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("Express server is running...");
 });
+
+
+function insertItem(body){
+    let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err){
+            if(err) throw(err);
+            console.log("Connected!");
+            
+            let sql = ``;
+            
+            let params = [];
+            
+            conn.query(sql, params, function(err, rows, fields){
+                if(err) throw(err);
+                conn.end()
+                resolve(rows);
+            })//connect
+        })//connect
+    })//promise
+}
