@@ -12,7 +12,7 @@
             $(document).ready(function(){
             $(".delete").on("click", function(event){
                
-               if( !confirm("Delete author?")){ 
+               if( !confirm("Delete item?")){ 
                    event.preventDefault(); //prevents default behavior of links
                }
                
@@ -38,10 +38,10 @@
         </form>
         
         <h3>Parts List</h3>
-        <% itemList.forEach(function(item)){ %>
-            Item One<br>
-            [<a href="/updateItem">Update</a>]
-            [<a class="delete" href="/deleteItem">Delete</a>]
+        <% itemList.forEach(function(item){ %>
+            <%=item.upgrade%><br>
+            [<a href="/updateItem?engineId=<%=item.engineId%>">Update</a>]
+            [<a class="delete" href="/deleteItem?engineId=<%=item.engineId%>">Delete</a>]
             <br><br>
         <% }) %>
     </body>
