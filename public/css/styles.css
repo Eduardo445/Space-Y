@@ -58,6 +58,7 @@ body {
 #addItemPage{
     justify-content:center;
     text-align: center;
+    color:green;
 }
 
 .addItemForm{
