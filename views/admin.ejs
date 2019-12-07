@@ -38,15 +38,11 @@
         </form>
         
         <h3>Parts List</h3>
-        Item One<br>
-        [<a href="/updateItem">Update</a>]
-        [<a class="delete" href="/deleteItem">Delete</a>]
-        <br><br>
-        
-        Item Two<br>
-        [<a href="/updateItem">Update</a>]
-        [<a class="delete" href="/deleteItem">Delete</a>]
-        <br><br>
-        
+        <% itemList.forEach(function(item)){ %>
+            Item One<br>
+            [<a href="/updateItem">Update</a>]
+            [<a class="delete" href="/deleteItem">Delete</a>]
+            <br><br>
+        <% }) %>
     </body>
 </html>

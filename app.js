@@ -33,9 +33,11 @@ app.post("/check", function(req, res){
     
 });//verification
 
-app.get("/admin", function(req, res){
+app.get("/admin", async function(req, res){
     
-    res.render("admin");
+    let itemList = await getItemList();
+    console.log(itemList);
+    res.render("admin", {"itemList":itemList});
     
 });//admin
 
@@ -113,24 +115,72 @@ app.get("/deleteItem", function(req,res){
 // });//dbTest
 
 //values in red must be updated
-// function dbConnection(){
+function dbConnection(){
 
-//     let conn = mysql.createConnection({
-//         host: "cst336db.space",
-//         user: "cst336_dbUser5",
-//         password: "clmxkg",
-//         database:"cst336_db5"
-//     });//createConnection
+    let conn = mysql.createConnection({
+        host: "cst336db.space",
+        user: "cst336_dbUser5",
+        password: "clmxkg",
+        database:"cst336_db5"
+    });//createConnection
 
-//     return conn;
-// }
+    return conn;
+}
 
 //running server
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("Express server is running...");
 });
 
+
+function getItemList(){
+    let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err){
+            if(err) throw(err);
+            console.log("Connected!");
+            
+            let sql = `SELECT upgrade, cost, description, weight,  material
+                        FROM engine ORDER BY upgrade`;
+            
+            conn.query(sql, function(err, rows, fields){
+                if(err) throw(err);
+                conn.end()
+                resolve(rows);
+            })//connect
+        })//connect
+    })//promise
+}
+
+
 function insertItem(body){
+    let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err){
+            if(err) throw(err);
+            console.log("Connected!");
+            
+            let sql = `INSERT_INTO engine
+                        (upgrade, cost, description, weight, material
+                        VALUES (?,?,?,?,?)`;
+            
+            let params = [body.engine, body.cost, body.description, 
+                        body.weight, body.material];
+            
+            console.log(params);
+            
+            // conn.query(sql, params, function(err, rows, fields){
+            //     if(err) throw(err);
+            //     conn.end()
+            //     resolve(rows);
+            // })//connect
+        })//connect
+    })//promise
+}
+
+function updateItem(body){
     let conn = dbConnection();
     
     return new Promise(function(resolve, reject){
@@ -150,3 +200,4 @@ function insertItem(body){
         })//connect
     })//promise
 }
+
