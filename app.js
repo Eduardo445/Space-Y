@@ -3,37 +3,60 @@ const mysql = require("mysql");
 const app = express();
 app.set("view engine", "ejs");
 app.use(express.static("public")); //access images, css, js
+app.use(express.urlencoded()); //use to parse data sent using the POST method
+const sha256  = require("sha256");
+const session = require('express-session');
 
-var loggedIn = false;
+app.use(session({ secret: 'any word', cookie: { maxAge: 60000 }}));
 
 //routes
 app.get("/", function(req, res){
-    res.render("index", {
-        "log": loggedIn
-    });
+    
+    res.render("home");
+    
 });//root
 
 app.get("/AdminLog-In", function(req, res){
+    
     res.render("log-in");
+    
 });//AdminLog-In
 
-app.get("/check", function(req, res){
-    if(req.query.use == "Admin123" && req.query.pass == "Test123") {
-        loggedIn = true;
-        res.redirect("/admin");
+app.post("/check", function(req, res){
+    //spacey
+    if(req.body.username == "admin" && sha256(req.body.password) == "df9366ecf858656e8dba29c9b21309149d3eb8fa6259e99ba74394a152048bb7") {
+        req.session.authenticated = true;
+        res.send({"check":true});
     } else {
-        res.redirect("/");
+        res.send(false);
     }
+    
 });//verification
 
 app.get("/admin", function(req, res){
+    
     res.render("admin");
+    
 });//admin
 
 app.get("/logout", function(req, res){
-    loggedIn = false;
-    res.redirect("/");
-});//admin
+    
+    req.session.destroyed;
+    res.render("log-in");
+    
+});//logout
+
+app.get("/buildShip", function(req, res){
+    
+    res.render("build");
+    
+});//logout
+
+app.get("/shopcart", function(req, res){
+    
+    res.render("cart");
+    
+});//logout
 
 
 // app.get("/dbTest", function(req, res){
