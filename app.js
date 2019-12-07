@@ -59,6 +59,40 @@ app.get("/shopcart", function(req, res){
 });//logout
 
 
+app.get("/addItem", function(req,res){
+    res.render("addItem");
+});//add item
+
+app.post("/addItem", function(req, res){
+    console.log(req.body);
+    
+    let message = "Item was NOT added to the system";
+    if(false){
+        message = "Item was added to the system";
+    }
+    
+    res.render("addItem", {"message":message});
+});//add item post
+
+app.get("/updateItem", async function(req,res){
+    res.render("updateItem")
+});//add item
+
+app.post("/updateItem", function(req,res){
+    console.log(req.body);
+    
+    let message = "Item was NOT updated";
+    if(false){
+        message = "Item was updated successfully";
+    }
+    res.render("updateItem", {"message":message});
+});//update item post
+
+app.get("/deleteItem", function(req,res){
+    let message = "Item was deleted from the database";
+    res.render("admin");
+});//add item
+
 // app.get("/dbTest", function(req, res){
 //     let conn = dbConnection();
     
