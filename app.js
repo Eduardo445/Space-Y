@@ -48,11 +48,170 @@ app.get("/logout", function(req, res){
     
 });//logout
 
-app.get("/buildShip", function(req, res){
+app.get("/buildShip", async function(req, res){
     
-    res.render("build");
+    let materials = await getMaterials();
+    let enginePrice = await getEnginePrice();
+    let weights = await getWeight();
+
+    res.render("build", {
+        "materials": materials,
+        "prices": enginePrice,
+        "weights": weights
+    });
     
-});//logout
+});//buildShip
+
+app.post("/buildShip", async function(req, res){
+    
+    let materials = await getMaterialNotUnique();
+    let enginePrice = await getEnginePrice();
+    let weights = await getWeight();
+    
+    // console.log(req.body.material);
+    // console.log(req.body.price);
+    // console.log(req.body.weight);
+    
+    // console.log(materials[0].material);
+    // console.log(enginePrice[0]);
+    // console.log(weights[0]);
+    
+    // console.log(materials.length);
+    // console.log(materials);
+    
+    
+    let choosenMaterial = [];
+    let selectedM = req.body.material;
+    
+    for(var i = 0; i < materials.length; i++) {
+        if(materials[i].material == selectedM) {
+            choosenMaterial.push(i);
+        }
+    }
+    
+    let choosenPrice = [];
+    let selectedP = req.body.price;
+    
+    for(var j = 0; j < enginePrice.length; j++) {
+        if(enginePrice[j].engineCost == selectedP) {
+            choosenPrice.push(j);
+        }
+    }
+    
+    let choosenWeight = [];
+    let selectedW = req.body.weight;
+    
+    for(var k = 0; k < weights.length; k++) {
+        if(weights[k].weight == selectedW) {
+            choosenWeight.push(k);
+        }
+    }
+    
+    console.log(choosenMaterial);
+    console.log(choosenPrice);
+    console.log(choosenWeight);
+    
+    let message = "Author WAS NOT updated!";
+    if(true) {
+        message = "Author succesfully updated!";
+    }
+    res.render("build", {
+        "message": message,
+        "materials": materials,
+        "prices": enginePrice,
+        "weights": weights
+    });
+    
+});//updateAuthor
+
+function getMaterials() {
+    
+    let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+            if (err) throw err;
+            console.log("Connected!");
+            let sql = `SELECT DISTINCT material
+                       FROM engine 
+                       ORDER BY material`;
+        
+            conn.query(sql, function (err, rows, fields) {
+                if (err) throw err;
+                // res.send(rows);
+                conn.end();
+                resolve(rows);
+            });//query
+        });//connect
+    });//Promise
+    
+}//getMaterials
+
+function getMaterialNotUnique() {
+    
+    let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+            if (err) throw err;
+            console.log("Connected!");
+            let sql = `SELECT material
+                       FROM engine`;
+        
+            conn.query(sql, function (err, rows, fields) {
+                if (err) throw err;
+                // res.send(rows);
+                conn.end();
+                resolve(rows);
+            });//query
+        });//connect
+    });//Promise
+    
+}//getMaterials
+
+function getEnginePrice() {
+    
+    let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+            if (err) throw err;
+            console.log("Connected!");
+            let sql = `SELECT engineCost
+                       FROM engine`;
+        
+            conn.query(sql, function (err, rows, fields) {
+                if (err) throw err;
+                // res.send(rows);
+                conn.end();
+                resolve(rows);
+            });//query
+        });//connect
+    });//Promise
+    
+}//getEnginePrice
+
+function getWeight() {
+    
+    let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+            if (err) throw err;
+            console.log("Connected!");
+            let sql = `SELECT weight
+                       FROM engine`;
+        
+            conn.query(sql, function (err, rows, fields) {
+                if (err) throw err;
+                // res.send(rows);
+                conn.end();
+                resolve(rows);
+            });//query
+        });//connect
+    });//Promise
+    
+}//getWeight
 
 app.get("/shopcart", function(req, res){
     

@@ -9,7 +9,7 @@
     </head>
     <body>
         
-        <h1 id="title">Famous Quote Search</h1>
+        <h1 id="title">Building Your Space Rocket</h1>
         
         <hr />
         <nav>
@@ -21,21 +21,78 @@
         
         <br /><br />
     
-        <form action="/shopcart" id="info">
-            Keyword1: <input type="text" name="key1" placeholder="Keyword"> <br>
+        <form method="POST" id="info">
+            <!--Keyword1: <input type="text" name="key1" placeholder="Keyword"> <br>-->
             
-            Keyword2: <input type="text" name="key2" placeholder="Keyword"> <br>
+            <!--Keyword2: <input type="text" name="key2" placeholder="Keyword"> <br>-->
         
             Category: For the database values
-            <select name="category">
+            <select name="material">
                 <option value="">Select One</option>
+                
+                <% materials.forEach(function(i){ %>
+                    <option><%=i.material%></option>
+                <% }); %>
+                
+            </select>
+            <br><br>
+            
+            Price: For the database values
+            <select name="price">
+                <option value="">Select One</option>
+                
+                <% prices.forEach(function(i){ %>
+                    <option><%=i.engineCost%></option>
+                <% }); %>
+                
+            </select>
+            <br><br>
+            
+            weight: For the database values
+            <select name="weight">
+                <option value="">Select One</option>
+                
+                <% weights.forEach(function(i){ %>
+                    <option><%=i.weight%></option>
+                <% }); %>
+                
             </select>
             
-            <h1>Disclaimer: This is only a skeleton!</h1>
-            <p>Changes will be made when the database is created.</p>
-            <p>Upon agreeing on how the we want the user to create their ship, Eduardo/Athean will create this part</p>
+            <button> Search! </button>
+            <!--<h1>Disclaimer: This is only a skeleton!</h1>-->
+            <!--<p>Changes will be made when the database is created.</p>-->
+            <!--<p>Upon agreeing on how the we want the user to create their ship, Eduardo/Athean will create this part</p>-->
             
-            <button> Add! </button>
+            <%= typeof(message) != "undefined"?message:"" %>
+            
+            <table border="1" cellpadding="3" id="printTable">
+            	<tbody><tr>
+            	  <th>First Name</th>
+            	  <th>Last Name</th>		
+            	  <th>Points</th>
+            	</tr>
+            	<tr>
+            		<td>Jill</td>
+            		<td>Smith</td>		
+            		<td>50</td>
+            	</tr>
+            	<tr>
+            		<td>Eve</td>
+            		<td>Jackson</td>		
+            		<td>94</td>
+            	</tr>
+            	<tr>
+            		<td>John</td>
+            		<td>Doe</td>		
+            		<td>80</td>
+            	</tr>
+            	<tr>
+            		<td>Adam</td>
+            		<td>Johnson</td>		
+            		<td>67</td>
+            	</tr>
+            </tbody></table>
+            
         </form>
         
             
