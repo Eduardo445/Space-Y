@@ -23,21 +23,22 @@
     </head>
     <body>
         
-        <span>Welcome to the Admin Page</span>
+        <h1>Welcome to the Admin Page</h1>
+        <div id="adminBtns">
+            <form action="/addItem">
+                <button class="adminBtns">Add New Item</button>
+            </form>
+            
+            <form action="/reports">
+                <button class="adminBtns">Generate Reports</button>
+            </form>
+    
+            <form action="/logout">
+                    <button class="adminBtns" type="submit">Log-Out</button>
+            </form>
+        </div>
         
-        <form action="/addItem">
-            <button>Add New Item</button>
-        </form>
-        
-        <form action="/reports">
-            <button>Generate Reports</button>
-        </form>
-
-        <form action="/logout">
-                <button type="submit">Log-Out</button>
-        </form>
-        
-        <h3>Parts List</h3>
+        <h2>Parts List</h2>
         <% itemList.forEach(function(item){ %>
             <%=item.upgrade%><br>
             [<a href="/updateItem?engineId=<%=item.engineId%>">Update</a>]
