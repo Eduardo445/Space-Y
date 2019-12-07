@@ -53,76 +53,104 @@ app.get("/buildShip", async function(req, res){
     let materials = await getMaterials();
     let enginePrice = await getEnginePrice();
     let weights = await getWeight();
+    let display = [];
 
     res.render("build", {
         "materials": materials,
         "prices": enginePrice,
-        "weights": weights
+        "weights": weights,
+        "displaying": display
     });
     
 });//buildShip
 
 app.post("/buildShip", async function(req, res){
     
-    let materials = await getMaterialNotUnique();
+    let materials = await getMaterials();
     let enginePrice = await getEnginePrice();
     let weights = await getWeight();
+    let engineInfo = await getEngineInfo();
     
-    // console.log(req.body.material);
-    // console.log(req.body.price);
-    // console.log(req.body.weight);
-    
-    // console.log(materials[0].material);
-    // console.log(enginePrice[0]);
-    // console.log(weights[0]);
-    
-    // console.log(materials.length);
-    // console.log(materials);
-    
-    
-    let choosenMaterial = [];
     let selectedM = req.body.material;
-    
-    for(var i = 0; i < materials.length; i++) {
-        if(materials[i].material == selectedM) {
-            choosenMaterial.push(i);
-        }
-    }
-    
-    let choosenPrice = [];
     let selectedP = req.body.price;
-    
-    for(var j = 0; j < enginePrice.length; j++) {
-        if(enginePrice[j].engineCost == selectedP) {
-            choosenPrice.push(j);
-        }
-    }
-    
-    let choosenWeight = [];
     let selectedW = req.body.weight;
+    let display = [];
     
-    for(var k = 0; k < weights.length; k++) {
-        if(weights[k].weight == selectedW) {
-            choosenWeight.push(k);
+    if( (selectedM == "") && (selectedP == "") && (selectedW == "") ) {
+        for(var a = 0; a < engineInfo.length; a++) {
+            display.push(a);
+        }
+    } else if ( (selectedM == "") && (selectedP == "") ) {
+        for(var b = 0; b < engineInfo.length; b++) {
+            if(engineInfo[b].weight == selectedW) {
+                display.push(b);
+            }
+        }
+    } else if ( (selectedM == "") && (selectedW == "") ) {
+        for(var c = 0; c < engineInfo.length; c++) {
+            if(engineInfo[c].engineCost == selectedP) {
+                display.push(c);
+            }
+        }
+    } else if ( (selectedP == "") && (selectedW == "") ) {
+        for(var d = 0; d < engineInfo.length; d++) {
+            if(engineInfo[d].material == selectedM) {
+                display.push(d);
+            }
+        }
+    } else if (selectedM == "") {
+        for(var e = 0; e < engineInfo.length; e++) {
+            if(engineInfo[e].engineCost == selectedP && engineInfo[e].weight == selectedW) {
+                display.push(e);
+            }
+        }
+    } else if (selectedP == "") {
+        for(var f = 0; f < engineInfo.length; f++) {
+            if(engineInfo[f].material == selectedM && engineInfo[f].weight == selectedW) {
+                display.push(f);
+            }
+        }
+    } else if (selectedW == "") {
+        for(var g = 0; g < engineInfo.length; g++) {
+            if(await engineInfo[g].material == selectedM && engineInfo[g].engineCost == selectedP) {
+                display.push(g);
+            }
         }
     }
+
+    console.log(display);
     
-    console.log(choosenMaterial);
-    console.log(choosenPrice);
-    console.log(choosenWeight);
-    
-    let message = "Author WAS NOT updated!";
-    if(true) {
-        message = "Author succesfully updated!";
-    }
     res.render("build", {
-        "message": message,
         "materials": materials,
         "prices": enginePrice,
-        "weights": weights
+        "weights": weights,
+        "engineINFO": engineInfo,
+        "displaying": display
     });
     
 });//updateAuthor
+
+function getEngineInfo() {
+    
+    let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+            if (err) throw err;
+            console.log("Connected!");
+            let sql = `SELECT * 
+                       FROM engine`;
+        
+            conn.query(sql, function (err, rows, fields) {
+                if (err) throw err;
+                // res.send(rows);
+                conn.end();
+                resolve(rows);
+            });//query
+        });//connect
+    });//Promise
+    
+}//getEngineInfo
 
 function getMaterials() {
     
@@ -147,28 +175,6 @@ function getMaterials() {
     
 }//getMaterials
 
-function getMaterialNotUnique() {
-    
-    let conn = dbConnection();
-    
-    return new Promise(function(resolve, reject){
-        conn.connect(function(err) {
-            if (err) throw err;
-            console.log("Connected!");
-            let sql = `SELECT material
-                       FROM engine`;
-        
-            conn.query(sql, function (err, rows, fields) {
-                if (err) throw err;
-                // res.send(rows);
-                conn.end();
-                resolve(rows);
-            });//query
-        });//connect
-    });//Promise
-    
-}//getMaterials
-
 function getEnginePrice() {
     
     let conn = dbConnection();
@@ -177,8 +183,9 @@ function getEnginePrice() {
         conn.connect(function(err) {
             if (err) throw err;
             console.log("Connected!");
-            let sql = `SELECT engineCost
-                       FROM engine`;
+            let sql = `SELECT DISTINCT engineCost
+                       FROM engine
+                       ORDER BY engineCost`;
         
             conn.query(sql, function (err, rows, fields) {
                 if (err) throw err;
@@ -199,8 +206,9 @@ function getWeight() {
         conn.connect(function(err) {
             if (err) throw err;
             console.log("Connected!");
-            let sql = `SELECT weight
-                       FROM engine`;
+            let sql = `SELECT DISTINCT weight
+                       FROM engine
+                       ORDER BY weight`;
         
             conn.query(sql, function (err, rows, fields) {
                 if (err) throw err;

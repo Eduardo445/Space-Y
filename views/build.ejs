@@ -23,10 +23,7 @@
         <br /><br />
     
         <form method="POST" id="info">
-            <!--Keyword1: <input type="text" name="key1" placeholder="Keyword"> <br>-->
             
-            <!--Keyword2: <input type="text" name="key2" placeholder="Keyword"> <br>-->
-        
             Category: For the database values
             <select name="material">
                 <option value="">Select One</option>
@@ -42,8 +39,8 @@
             <select name="price">
                 <option value="">Select One</option>
                 
-                <% prices.forEach(function(i){ %>
-                    <option><%=i.engineCost%></option>
+                <% prices.forEach(function(j){ %>
+                    <option><%=j.engineCost%></option>
                 <% }); %>
                 
             </select>
@@ -53,50 +50,45 @@
             <select name="weight">
                 <option value="">Select One</option>
                 
-                <% weights.forEach(function(i){ %>
-                    <option><%=i.weight%></option>
+                <% weights.forEach(function(k){ %>
+                    <option><%=k.weight%></option>
                 <% }); %>
                 
             </select>
             
             <button> Search! </button>
-            <!--<h1>Disclaimer: This is only a skeleton!</h1>-->
-            <!--<p>Changes will be made when the database is created.</p>-->
-            <!--<p>Upon agreeing on how the we want the user to create their ship, Eduardo/Athean will create this part</p>-->
-            
-            <%= typeof(message) != "undefined"?message:"" %>
             
             <table border="1" cellpadding="3" id="printTable">
-            	<tbody><tr>
-            	  <th>First Name</th>
-            	  <th>Last Name</th>		
-            	  <th>Points</th>
-            	</tr>
-            	<tr>
-            		<td>Jill</td>
-            		<td>Smith</td>		
-            		<td>50</td>
-            	</tr>
-            	<tr>
-            		<td>Eve</td>
-            		<td>Jackson</td>		
-            		<td>94</td>
-            	</tr>
-            	<tr>
-            		<td>John</td>
-            		<td>Doe</td>		
-            		<td>80</td>
-            	</tr>
-            	<tr>
-            		<td>Adam</td>
-            		<td>Johnson</td>		
-            		<td>67</td>
-            	</tr>
-            </tbody></table>
+            	<tbody>
+            	    <tr>
+            	        <th>Upgrade</th>
+            	        <th>Engine Cost</th>		
+            	        <th>Description</th>
+            	        <th>Weight</th>
+            	        <th>Material</th>
+            	        <th>PayloadReq</th>
+                	</tr>
+            	
+                	<% for(var i = 0; i < displaying.length; i++) { %>
+                        <option><%=i.material%></option>
+                        <tr>
+            		        <td><%= engineINFO[displaying[i]].upgrade %></td>
+            		        <td><%= engineINFO[displaying[i]].engineCost %></td>		
+            		        <td><%= engineINFO[displaying[i]].description %></td>
+            		        <td><%= engineINFO[displaying[i]].weight %></td>
+            		        <td><%= engineINFO[displaying[i]].material %></td>
+            		        <td><%= engineINFO[displaying[i]].payloadReq %></td>
+            	        </tr>
+                    <% } %>
+                	
+                </tbody>
+            </table>
             
         </form>
         
-            
+        <form action="/buildShip">
+            <button> Build Another </button>
+        </form>
 
     </body>
 </html>
