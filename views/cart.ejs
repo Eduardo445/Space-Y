@@ -25,26 +25,35 @@
         
         <% } %>
         
-        <table border="1" cellpadding="3" id="printTable">
-        	<tbody>
-        	    <tr>
-        	        <th>Engines</th>
-        	        <th>Price</th>
-        	        <th>Option</th>
-            	</tr>
-        	
-            	<% for(var i = 0; i < position.length; i++) { %>
-            	    <% for(var j = 0; j < position[i].length; j++) { %>
-                        <tr>
-            		        <% if (amount[i][j] != 0) { %>
-            		            <td><%= engineI[position[i][j]].upgrade %></td>
-            		        <% } %>  
-            	        </tr>
-            	     <% } %>   
-                <% } %>
+        <% if (position.length != 0) {%>
+            <table border="1" cellpadding="3" id="printTable">
+            	<tbody>
+            	    <tr>
+            	        <th>Order Number</th>
+            	        <th>Engines</th>
+            	        <th>Price</th>
+                	</tr>
             	
-            </tbody>
-        </table>
+                	<% for(var i = 0; i < position.length; i++) { %>
+                	    <tr>
+                    	    <td> <%= i + 1 %> </td>
+                    	    <td>
+                        	    <% for(var j = 0; j < position[i].length; j++) { %>
+                    		        <% if (amount[i][j] != 0) { %>
+                    		            <%= engineI[position[i][j]].upgrade%>
+                    		            <br>
+                    		        <% } %>
+                        	    <% } %>
+                    	    </td>
+                    	    <td>$<%= engineTP[i][0] %></td>
+                	    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+            <br><br>
+            <span>Total Cost: $<%= total[0] %></span>
+            
+        <% } %>
         
     </body>
 </html>
