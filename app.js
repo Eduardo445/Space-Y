@@ -24,7 +24,7 @@ app.get("/AdminLog-In", function(req, res){
 
 app.post("/check", function(req, res){
     //spacey
-    if(req.body.username == "admin" && sha256(req.body.password) == "df9366ecf858656e8dba29c9b21309149d3eb8fa6259e99ba74394a152048bb7") {
+    if(req.body.username == "admin" && sha256(req.body.password) == "2bb80d537b1da3e38bd30361aa855686bde0eacd7162fef6a25fe97bf527a25b") {
         req.session.authenticated = true;
         res.send({"check":true});
     } else {
@@ -55,6 +55,8 @@ app.get("/logout", function(req, res){
 let displays = [];
 let valuesEntered = [];
 let positionEntered = [];
+let prices = [];
+let totalPrice = [0];
 
 app.get("/buildShip", async function(req, res){
     
@@ -89,11 +91,32 @@ app.post("/buildShip", async function(req, res){
         
         var copyOfDisplays = [...displays];
         var copyOfValues = [...req.body.name];
+        
+        var price = [0];
+        
+        // console.log(copyOfDisplays[0].length);
+        // console.log(copyOfDisplays.length);
+        
+        for(var k = 0; k < copyOfDisplays.length; k++) {
+            if(copyOfValues[k] != 0) {
+                price[0] += engineInfo[copyOfDisplays[k]].engineCost * copyOfValues[k];
+            }
+        }
+        
+        // console.log(price[0]);
+        
+        var copyOfPrice = [...price];
+        totalPrice[0] += copyOfPrice[0];
+        
+        // console.log(copyOfPrice[0]);
+        // console.log(totalPrice[0]);
 
         valuesEntered.push(copyOfValues);
         positionEntered.push(copyOfDisplays);
-        console.log(valuesEntered);
-        console.log(positionEntered);
+        prices.push(copyOfPrice);
+        // console.log(valuesEntered);
+        // console.log(positionEntered);
+        console.log(prices);
         
     }
     
@@ -252,6 +275,8 @@ app.get("/shopcart", async function(req, res){
     res.render("cart", {
         "position": positionEntered,
         "amount": valuesEntered,
+        "engineTP": prices,
+        "total": totalPrice,
         "engineI": engineInfo
     });
     
