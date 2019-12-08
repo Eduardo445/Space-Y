@@ -35,10 +35,14 @@ app.post("/check", function(req, res){
 
 app.get("/admin", async function(req, res){
     
-    let itemList = await getItemList();
-    //console.log(itemList);
-    res.render("admin", {"itemList":itemList});
-    
+    if(!req.session.authenticated){
+        res.render("log-in")
+    }
+    else{
+        let itemList = await getItemList();
+        //console.log(itemList);
+        res.render("admin", {"itemList":itemList});
+    }    
 });//admin
 
 app.get("/logout", function(req, res){
@@ -254,8 +258,19 @@ app.get("/shopcart", async function(req, res){
 });//logout
 
 
+
+
+//admin routes ========================
+
+
+
 app.get("/addItem", function(req,res){
-    res.render("addItem");
+    if(!req.session.authenticated){
+        res.render("log-in")
+    }
+    else{
+        res.render("addItem");
+    }
 });//add item
 
 app.post("/addItem", async function(req, res){
@@ -270,10 +285,14 @@ app.post("/addItem", async function(req, res){
 });//add item post
 
 app.get("/updateItem", async function(req,res){
-    
-    let itemInfo = await getItemInfo(req.query.engineId);
-    console.log(itemInfo);
-    res.render("updateItem", {"itemInfo":itemInfo});
+    if(!req.session.authenticated){
+        res.render("log-in")
+    }
+    else{
+        let itemInfo = await getItemInfo(req.query.engineId);
+        console.log(itemInfo);
+        res.render("updateItem", {"itemInfo":itemInfo});
+    }
 });//update item
 
 app.post("/updateItem", async function(req,res){
@@ -288,15 +307,20 @@ app.post("/updateItem", async function(req,res){
 });//update item post
 
 app.get("/deleteItem", async function(req,res){
-    let rows = await deleteItem(req.query.engineId);
-    
-    let message = "Item was NOT deleted from the database";
-    if(rows.affectedRows > 0){
-        message = "Item deleted successfully";
+    if(!req.session.authenticated){
+        res.render("log-in")
     }
-    console.log(message);
-    let itemList = await getItemList();
-    res.render("admin", {"itemList":itemList});
+    else{
+        let rows = await deleteItem(req.query.engineId);
+        
+        let message = "Item was NOT deleted from the database";
+        if(rows.affectedRows > 0){
+            message = "Item deleted successfully";
+        }
+        console.log(message);
+        let itemList = await getItemList();
+        res.render("admin", {"itemList":itemList});
+    }
 });//delete item
 
 // app.get("/dbTest", function(req, res){

@@ -39,11 +39,15 @@
         </div>
         
         <h2>Parts List</h2>
-        <% itemList.forEach(function(item){ %>
-            <%=item.upgrade%><br>
-            [<a href="/updateItem?engineId=<%=item.engineId%>">Update</a>]
-            [<a class="delete" href="/deleteItem?engineId=<%=item.engineId%>">Delete</a>]
+        <ul>
+            <% itemList.forEach(function(item){ %>
+            <li>
+                <%=item.upgrade%>
+                [<a href="/updateItem?engineId=<%=item.engineId%>">Update</a>]
+                [<a class="delete" href="/deleteItem?engineId=<%=item.engineId%>">Delete</a>]
+            </li>
             <br><br>
-        <% }) %>
+            <% }) %>
+        </ul>
     </body>
 </html>
