@@ -51,6 +51,8 @@ app.get("/logout", function(req, res){
 let displays = [];
 let valuesEntered = [];
 let positionEntered = [];
+let prices = [];
+let totalPrice = [0];
 
 app.get("/buildShip", async function(req, res){
     
@@ -85,11 +87,32 @@ app.post("/buildShip", async function(req, res){
         
         var copyOfDisplays = [...displays];
         var copyOfValues = [...req.body.name];
+        
+        var price = [0];
+        
+        // console.log(copyOfDisplays[0].length);
+        // console.log(copyOfDisplays.length);
+        
+        for(var k = 0; k < copyOfDisplays.length; k++) {
+            if(copyOfValues[k] != 0) {
+                price[0] += engineInfo[copyOfDisplays[k]].engineCost * copyOfValues[k];
+            }
+        }
+        
+        // console.log(price[0]);
+        
+        var copyOfPrice = [...price];
+        totalPrice[0] += copyOfPrice[0];
+        
+        // console.log(copyOfPrice[0]);
+        // console.log(totalPrice[0]);
 
         valuesEntered.push(copyOfValues);
         positionEntered.push(copyOfDisplays);
-        console.log(valuesEntered);
-        console.log(positionEntered);
+        prices.push(copyOfPrice);
+        // console.log(valuesEntered);
+        // console.log(positionEntered);
+        console.log(prices);
         
     }
     
@@ -248,6 +271,8 @@ app.get("/shopcart", async function(req, res){
     res.render("cart", {
         "position": positionEntered,
         "amount": valuesEntered,
+        "engineTP": prices,
+        "total": totalPrice,
         "engineI": engineInfo
     });
     
