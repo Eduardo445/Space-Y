@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <link href="css/styles.css" rel="stylesheet" type="text/css" />
         <title>SpaceY</title>
     </head>
     <body>
@@ -11,25 +12,27 @@
         
         <!--Add in default values taken from database-->
         
-        <form method="POST"> 
+        <form class="itemForm" method="POST"> 
             Engine part: <input type="text" name="engine" value="<%=itemInfo.upgrade%>"><br><br>
             Cost: <input type="text" name="cost" value="<%=itemInfo.engineCost%>"><br><br>
             Description: <input type="text" name="description" value="<%=itemInfo.description%>"><br><br>
             Weight: <input type="text" name="weight" value="<%=itemInfo.weight%>"><br><br>
             Material: <input type="text" name="material" value="<%=itemInfo.material%>"><br><br>
-            Payload:<br>
+            Payload:
             <input type="radio" name="payload" value="1" <%=itemInfo.payloadReq == "1" ? "checked" : "" %>>100000
             <input type="radio" name="payload" value="2" <%=itemInfo.payloadReq == "2" ? "checked" : "" %>>75000
             <input type="radio" name="payload" value="3" <%=itemInfo.payloadReq == "3" ? "checked" : "" %>>50000
             <input type="radio" name="payload" value="4" <%=itemInfo.payloadReq == "4" ? "checked" : "" %>>25000<br><br>
             
             <input type="hidden" name="engineId" value="<%=itemInfo.engineId%>">
-            <button>Update Item</button>
+            <button class="formBtn">Update  Item</button>
             <%= typeof(message) != "undefined" ? message : "" %>
         </form>
         
+        <br><br>
+        
         <form action="/admin">
-            <button>Back to Menu</button>
+            <button style='border:5px inset gray;'>Back to Menu</button>
         </form>
     </body>
 </html>
