@@ -24,7 +24,7 @@ app.get("/AdminLog-In", function(req, res){
 
 app.post("/check", function(req, res){
     //spacey
-    if(req.body.username == "admin" && sha256(req.body.password) == "df9366ecf858656e8dba29c9b21309149d3eb8fa6259e99ba74394a152048bb7") {
+    if(req.body.username == "admin" && sha256(req.body.password) == "2bb80d537b1da3e38bd30361aa855686bde0eacd7162fef6a25fe97bf527a25b") {
         req.session.authenticated = true;
         res.send({"check":true});
     } else {
