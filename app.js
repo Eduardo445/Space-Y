@@ -48,18 +48,23 @@ app.get("/logout", function(req, res){
     
 });//logout
 
+let displays = [];
+let valuesEntered = [];
+let positionEntered = [];
+
 app.get("/buildShip", async function(req, res){
     
     let materials = await getMaterials();
     let enginePrice = await getEnginePrice();
     let weights = await getWeight();
-    let display = [];
+    
+    displays = [];
 
     res.render("build", {
         "materials": materials,
         "prices": enginePrice,
         "weights": weights,
-        "displaying": display
+        "displaying": displays
     });
     
 });//buildShip
@@ -74,61 +79,76 @@ app.post("/buildShip", async function(req, res){
     let selectedM = req.body.material;
     let selectedP = req.body.price;
     let selectedW = req.body.weight;
-    let display = [];
     
-    if( (selectedM == "") && (selectedP == "") && (selectedW == "") ) {
-        for(var a = 0; a < engineInfo.length; a++) {
-            display.push(a);
-        }
-    } else if ( (selectedM == "") && (selectedP == "") ) {
-        for(var b = 0; b < engineInfo.length; b++) {
-            if(engineInfo[b].weight == selectedW) {
-                display.push(b);
+    if(displays.length != 0) {
+        console.log(displays);
+        
+        var copyOfDisplays = [...displays];
+        var copyOfValues = [...req.body.name];
+
+        valuesEntered.push(copyOfValues);
+        positionEntered.push(copyOfDisplays);
+        console.log(valuesEntered);
+        console.log(positionEntered);
+        
+    }
+    
+    
+    if(displays.length == 0) {
+        if( (selectedM == "") && (selectedP == "") && (selectedW == "") ) {
+            for(var a = 0; a < engineInfo.length; a++) {
+                displays.push(a);
             }
-        }
-    } else if ( (selectedM == "") && (selectedW == "") ) {
-        for(var c = 0; c < engineInfo.length; c++) {
-            if(engineInfo[c].engineCost == selectedP) {
-                display.push(c);
+        } else if ( (selectedM == "") && (selectedP == "") ) {
+            for(var b = 0; b < engineInfo.length; b++) {
+                if(engineInfo[b].weight == selectedW) {
+                    displays.push(b);
+                }
             }
-        }
-    } else if ( (selectedP == "") && (selectedW == "") ) {
-        for(var d = 0; d < engineInfo.length; d++) {
-            if(engineInfo[d].material == selectedM) {
-                display.push(d);
+        } else if ( (selectedM == "") && (selectedW == "") ) {
+            for(var c = 0; c < engineInfo.length; c++) {
+                if(engineInfo[c].engineCost == selectedP) {
+                    displays.push(c);
+                }
             }
-        }
-    } else if (selectedM == "") {
-        for(var e = 0; e < engineInfo.length; e++) {
-            if(engineInfo[e].engineCost == selectedP && engineInfo[e].weight == selectedW) {
-                display.push(e);
+        } else if ( (selectedP == "") && (selectedW == "") ) {
+            for(var d = 0; d < engineInfo.length; d++) {
+                if(engineInfo[d].material == selectedM) {
+                    displays.push(d);
+                }
             }
-        }
-    } else if (selectedP == "") {
-        for(var f = 0; f < engineInfo.length; f++) {
-            if(engineInfo[f].material == selectedM && engineInfo[f].weight == selectedW) {
-                display.push(f);
+        } else if (selectedM == "") {
+            for(var e = 0; e < engineInfo.length; e++) {
+                if(engineInfo[e].engineCost == selectedP && engineInfo[e].weight == selectedW) {
+                    displays.push(e);
+                }
             }
-        }
-    } else if (selectedW == "") {
-        for(var g = 0; g < engineInfo.length; g++) {
-            if(await engineInfo[g].material == selectedM && engineInfo[g].engineCost == selectedP) {
-                display.push(g);
+        } else if (selectedP == "") {
+            for(var f = 0; f < engineInfo.length; f++) {
+                if(engineInfo[f].material == selectedM && engineInfo[f].weight == selectedW) {
+                    displays.push(f);
+                }
+            }
+        } else if (selectedW == "") {
+            for(var g = 0; g < engineInfo.length; g++) {
+                if(engineInfo[g].material == selectedM && engineInfo[g].engineCost == selectedP) {
+                    displays.push(g);
+                }
             }
         }
     }
 
-    console.log(display);
+    // console.log(displays);
     
     res.render("build", {
         "materials": materials,
         "prices": enginePrice,
         "weights": weights,
         "engineINFO": engineInfo,
-        "displaying": display
+        "displaying": displays
     });
     
-});//updateAuthor
+});//buildShip
 
 function getEngineInfo() {
     
@@ -221,9 +241,15 @@ function getWeight() {
     
 }//getWeight
 
-app.get("/shopcart", function(req, res){
+app.get("/shopcart", async function(req, res){
     
-    res.render("cart");
+    let engineInfo = await getEngineInfo();
+    
+    res.render("cart", {
+        "position": positionEntered,
+        "amount": valuesEntered,
+        "engineI": engineInfo
+    });
     
 });//logout
 

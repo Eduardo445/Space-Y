@@ -56,39 +56,56 @@
                 
             </select>
             
-            <br>
-            <button> Search! </button>
+            <br><br>
             
-            <table border="1" cellpadding="3" id="printTable">
-            	<tbody>
-            	    <tr>
-            	        <th>Upgrade</th>
-            	        <th>Engine Cost</th>		
-            	        <th>Description</th>
-            	        <th>Weight</th>
-            	        <th>Material</th>
-            	        <th>PayloadReq</th>
-                	</tr>
-            	
-                	<% for(var i = 0; i < displaying.length; i++) { %>
-                        <tr>
-            		        <td><%= engineINFO[displaying[i]].upgrade %></td>
-            		        <td><%= engineINFO[displaying[i]].engineCost %></td>		
-            		        <td><%= engineINFO[displaying[i]].description %></td>
-            		        <td><%= engineINFO[displaying[i]].weight %></td>
-            		        <td><%= engineINFO[displaying[i]].material %></td>
-            		        <td><%= engineINFO[displaying[i]].payloadReq %></td>
-            	        </tr>
-                    <% } %>
+            <% if (displaying.length != 0) { %>
+                <table border="1" cellpadding="3" id="printTable">
+                	<tbody>
+                	    <tr>
+                	        <th>Upgrade</th>
+                	        <th>Engine Cost</th>		
+                	        <th>Description</th>
+                	        <th>Weight</th>
+                	        <th>Material</th>
+                	        <th>PayloadReq</th>
+                	        <th>Quantity</th>
+                    	</tr>
                 	
-                </tbody>
-            </table>
+                    	<% for(var i = 0; i < displaying.length; i++) { %>
+                            <tr>
+                		        <td><%= engineINFO[displaying[i]].upgrade %></td>
+                		        <td>$<%= engineINFO[displaying[i]].engineCost %></td>		
+                		        <td><%= engineINFO[displaying[i]].description %></td>
+                		        <td><%= engineINFO[displaying[i]].weight %> lbs</td>
+                		        <td><%= engineINFO[displaying[i]].material %></td>
+                		        <td><%= engineINFO[displaying[i]].payloadReq %></td>
+                		        <td> <input type="number" name="name" min="0" value="0"> </td>
+                	        </tr>
+                        <% } %>
+                    	
+                    </tbody>
+                </table>
+            <% } %>
             
+            <br>
+            
+            <% if (displaying.length == 0) { %>
+                <button> Search! </button>
+            <% } %>
+            
+            <% if (displaying.length != 0) { %>
+                <button> Add To Cart </button>
+            <% } %>
         </form>
         
-        <form action="/buildShip">
-            <button> Build Another </button>
-        </form>
+        <% if (displaying.length != 0) { %>
+            <br>
+            <form action="/buildShip">
+                <button> Build Another </button>
+            </form>
+        <% } %>
+        
+            
 
     </body>
 </html>

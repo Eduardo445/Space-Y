@@ -21,8 +21,30 @@
         
         <br /><br />
         
+        <% for(var i = 0; i < position.length; i++) { %>
         
+        <% } %>
         
-
+        <table border="1" cellpadding="3" id="printTable">
+        	<tbody>
+        	    <tr>
+        	        <th>Engines</th>
+        	        <th>Price</th>
+        	        <th>Option</th>
+            	</tr>
+        	
+            	<% for(var i = 0; i < position.length; i++) { %>
+            	    <% for(var j = 0; j < position[i].length; j++) { %>
+                        <tr>
+            		        <% if (amount[i][j] != 0) { %>
+            		            <td><%= engineI[position[i][j]].upgrade %></td>
+            		        <% } %>  
+            	        </tr>
+            	     <% } %>   
+                <% } %>
+            	
+            </tbody>
+        </table>
+        
     </body>
 </html>
