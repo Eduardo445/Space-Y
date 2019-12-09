@@ -35,6 +35,8 @@ app.post("/check", function(req, res){
 
 app.get("/admin", async function(req, res){
     
+    console.log(req.session.authenticated);
+    
     if(!req.session.authenticated){
         res.render("log-in")
     }
@@ -47,7 +49,8 @@ app.get("/admin", async function(req, res){
 
 app.get("/logout", function(req, res){
     
-    req.session.destroyed;
+    req.session.destroy();
+    
     res.render("log-in");
     
 });//logout
@@ -313,6 +316,9 @@ app.post("/shopcart", async function(req, res){
 
 
 app.get("/addItem", function(req,res){
+    
+    console.log(req.session.authenticated);
+    
     if(!req.session.authenticated){
         res.render("log-in")
     }
@@ -327,6 +333,11 @@ app.post("/addItem", async function(req, res){
     let message = "Item was NOT added to the system";
     if(rows.affectedRows > 0){
         message = "Item was added to the system";
+        displays = [];
+        valuesEntered = [];
+        positionEntered = [];
+        prices = [];
+        totalPrice = [0];
     }
     
     res.render("addItem", {"message":message});
@@ -350,11 +361,19 @@ app.post("/updateItem", async function(req,res){
     let message = "Item was NOT updated";
     if(rows.affectedRows > 0){
         message = "Item was updated successfully";
+        displays = [];
+        valuesEntered = [];
+        positionEntered = [];
+        prices = [];
+        totalPrice = [0];
     }
     res.render("updateItem", {"message":message, "itemInfo": itemInfo});
 });//update item post
 
 app.get("/deleteItem", async function(req,res){
+    
+    console.log(req.session.authenticated);
+    
     if(!req.session.authenticated){
         res.render("log-in")
     }
@@ -364,6 +383,11 @@ app.get("/deleteItem", async function(req,res){
         let message = "Item was NOT deleted from the database";
         if(rows.affectedRows > 0){
             message = "Item deleted successfully";
+            displays = [];
+            valuesEntered = [];
+            positionEntered = [];
+            prices = [];
+            totalPrice = [0];
         }
         console.log(message);
         let itemList = await getItemList();
@@ -499,3 +523,41 @@ function deleteItem(engineId){
     })//promise
 }
 
+app.post("/generateReports", async function(req,res){
+    let conn = dbConnection();
+    
+    let list = await new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+            let sql = `SELECT * FROM engine`;
+    
+        
+           console.log("SQL:", sql)
+           conn.query(sql, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise
+    
+    /* Work */
+    let total = 0;
+    let stock = list.length;
+    let average = 0;
+    
+    for (let item of list) {
+        total += item.engineCost
+    }
+    
+    average = total / stock
+    
+    res.render("reports", {
+        total,
+        stock,
+        average
+    })
+})
