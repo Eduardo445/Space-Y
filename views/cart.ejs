@@ -7,17 +7,18 @@
         <link href="css/styles.css" rel="stylesheet" type="text/css" />
         <title>SpaceY</title>
     </head>
-    <body>
-        
-        <span>Shopping Cart is here!</span>
-        
-        <hr />
-        <nav>
-            <a href="/">Home</a>
-            <a href="/AdminLog-In">Admin Log-In</a>
-            <a href="/buildShip">Build</a>
-            <a href="/shopcart">Cart</a>
-        </nav>
+    <body id="cartPage">
+        <div class="header">
+            <h1>Shopping Cart</h1>
+            
+            <hr />
+            <nav>
+                <a class="head" href="/">Home</a>
+                <a class="head" href="/AdminLog-In">Admin Log-In</a>
+                <a class="head" href="/buildShip">Build</a>
+                <a class="head" href="/shopcart">Cart</a>
+            </nav>
+        </div>
         
         <br /><br />
         
@@ -51,7 +52,7 @@
                 </tbody>
             </table>
             <br><br>
-            <span>Total Cost: $<%= total[0] %></span>
+            <h3 id="totalCost">Total Cost: $<%= total[0] %></h3>
             
         <% } %>
         
