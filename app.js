@@ -35,6 +35,8 @@ app.post("/check", function(req, res){
 
 app.get("/admin", async function(req, res){
     
+    console.log(req.session.authenticated);
+    
     if(!req.session.authenticated){
         res.render("log-in")
     }
@@ -47,7 +49,8 @@ app.get("/admin", async function(req, res){
 
 app.get("/logout", function(req, res){
     
-    req.session.destroyed;
+    req.session.destroy();
+    
     res.render("log-in");
     
 });//logout
@@ -290,6 +293,9 @@ app.get("/shopcart", async function(req, res){
 
 
 app.get("/addItem", function(req,res){
+    
+    console.log(req.session.authenticated);
+    
     if(!req.session.authenticated){
         res.render("log-in")
     }
@@ -332,6 +338,9 @@ app.post("/updateItem", async function(req,res){
 });//update item post
 
 app.get("/deleteItem", async function(req,res){
+    
+    console.log(req.session.authenticated);
+    
     if(!req.session.authenticated){
         res.render("log-in")
     }
