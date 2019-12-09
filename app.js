@@ -309,7 +309,7 @@ app.get("/addItem", function(req,res){
         res.render("addItem");
     }
     
-});//add item
+});//additem
 
 app.post("/addItem", async function(req, res){
     
@@ -326,7 +326,7 @@ app.post("/addItem", async function(req, res){
     
     res.render("addItem", {"message":message});
     
-});//add item post
+});//additem post
 
 app.get("/updateItem", async function(req,res){
     
