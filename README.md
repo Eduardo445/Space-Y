@@ -1,4 +1,4 @@
-![](images/logo.png)
+![](public/img/logo.png)
 
 > ## *Internet Programming*
 
@@ -30,4 +30,4 @@
 > * Mock-ups
 > * Database schema
 
-![](images/background.jpg)
+![](public/img/background.jpg)
