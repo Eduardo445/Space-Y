@@ -10,14 +10,20 @@
         
         <script>
             $(document).ready(function(){
-            $(".delete").on("click", function(event){
-               
-               if( !confirm("Delete item?")){ 
-                   event.preventDefault(); //prevents default behavior of links
-               }
-               
-            });//confirm
+                $(".delete").on("click", function(event){
+                   
+                   if( !confirm("Delete item?")){ 
+                       event.preventDefault(); //prevents default behavior of links
+                   }
+                   
+                });//confirm
             
+                // $("#generateReports").on("click",function(event){
+                //     $.ajax({
+                //         method: "POST",
+                //         url: "/generateReports"
+                //     })
+                // })
         });//document ready
         </script>
     </head>
@@ -29,8 +35,8 @@
                 <button class="adminBtns">Add New Item</button>
             </form>
             
-            <form action="/reports">
-                <button class="adminBtns">Generate Reports</button>
+            <form action="/generateReports" method="post">
+                <button class="adminBtns" id="generateReports">Generate Reports</button>
             </form>
     
             <form action="/logout">

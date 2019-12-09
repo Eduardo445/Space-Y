@@ -45,6 +45,12 @@ body {
     font-weight: bold;
     color: white;
 }
+#createReportPage{
+    background-image: url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1952&q=80");
+    font-weight: bold;
+    color: black;
+    font-size:40px; ;
+}
 
 #adminBtns{
     justify-content:center;
@@ -76,4 +82,15 @@ ul{
 #printTable {
     margin-left:auto; 
     margin-right:auto;
+}
+.reportDisplay  {
+  
+  background-color: white;
+  opacity: 0.6;
+  filter: alpha(opacity=30); /* For IE8 and earlier */
+  text-align: center;
+  color: black;
+  border-style: groove;
+  border-width: 0px;
+  border-radius: 15px
 }
