@@ -93,20 +93,20 @@ app.post("/buildShip", async function(req, res){
         var price = [0];
         
         for(var k = 0; k < copyOfDisplays.length; k++) {
-            if(copyOfValues[k] != 0) {
+            if(copyOfValues[k] >= 0) {
                 price[0] += engineInfo[copyOfDisplays[k]].engineCost * copyOfValues[k];
             }
         }
         
         var copyOfPrice = [...price];
         totalPrice[0] += copyOfPrice[0];
-
-        valuesEntered.push(copyOfValues);
-        positionEntered.push(copyOfDisplays);
-        prices.push(copyOfPrice);
         
+        if(price[0] != 0) {
+            valuesEntered.push(copyOfValues);
+            positionEntered.push(copyOfDisplays);
+            prices.push(copyOfPrice);
+        }
     }
-    
     
     if(displays.length == 0) {
         if( (selectedM == "") && (selectedP == "") && (selectedW == "") ) {
