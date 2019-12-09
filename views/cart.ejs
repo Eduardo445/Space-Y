@@ -6,6 +6,14 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="css/styles.css" rel="stylesheet" type="text/css" />
         <title>SpaceY</title>
+        <script>
+                $(document).ready(function() {
+                    $("#delete").on("click", function(){
+                        $("#confirm").val(1);
+                    });//click
+                }); //document.ready
+        </script>
+        
     </head>
     <body id="cartPage">
         <div class="header">
@@ -21,40 +29,44 @@
         </div>
         
         <br /><br />
-        
-        <% for(var i = 0; i < position.length; i++) { %>
-        
-        <% } %>
-        
-        <% if (position.length != 0) {%>
-            <table border="1" cellpadding="3" id="printTable">
-            	<tbody>
-            	    <tr>
-            	        <th>Order Number</th>
-            	        <th>Engines</th>
-            	        <th>Price</th>
-                	</tr>
-            	
-                	<% for(var i = 0; i < position.length; i++) { %>
-                	    <tr>
-                    	    <td> <%= i + 1 %> </td>
-                    	    <td>
-                        	    <% for(var j = 0; j < position[i].length; j++) { %>
-                    		        <% if (amount[i][j] != 0) { %>
-                    		            <%= engineI[position[i][j]].upgrade%>
-                    		            <br>
-                    		        <% } %>
-                        	    <% } %>
-                    	    </td>
-                    	    <td>$<%= engineTP[i][0] %></td>
-                	    </tr>
-                    <% } %>
-                </tbody>
-            </table>
-            <br><br>
-            <h3 id="totalCost">Total Cost: $<%= total[0] %></h3>
+        <form method="POST">
+            <% for(var i = 0; i < position.length; i++) { %>
             
-        <% } %>
-        
+            <% } %>
+            
+            <% if (position.length != 0) {%>
+                <table border="1" cellpadding="3" id="printTable">
+                	<tbody>
+                	    <tr>
+                	        <th>Order Number</th>
+                	        <th>Engines</th>
+                	        <th>Price</th>
+                    	</tr>
+                	
+                    	<% for(var i = 0; i < position.length; i++) { %>
+                    	    <tr>
+                        	    <td> <%= i + 1 %> </td>
+                        	    <td>
+                            	    <% for(var j = 0; j < position[i].length; j++) { %>
+                        		        <% if (amount[i][j] != 0) { %>
+                        		            <%= engineI[position[i][j]].upgrade%>
+                        		            <br>
+                        		        <% } %>
+                            	    <% } %>
+                        	    </td>
+                        	    <td>$<%= engineTP[i][0] %></td>
+                    	    </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+                <br><br>
+                <h3 id="totalCost">Total Cost: $<%= total[0] %></h3>
+                
+                <br>
+                <button id="delete">Clear Cart</button></td>
+                <input id="confirm" value="0" type="hidden" name="confirm">
+                
+            <% } %>
+        </form>
     </body>
 </html>

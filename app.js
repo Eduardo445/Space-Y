@@ -280,9 +280,32 @@ app.get("/shopcart", async function(req, res){
         "engineI": engineInfo
     });
     
-});//logout
+});//shopcart
 
-
+app.post("/shopcart", async function(req, res){
+    
+    let engineInfo = await getEngineInfo();
+    let deleting = req.body.confirm;
+    
+    console.log(deleting);
+    
+    if(deleting == 1) {
+        displays = [];
+        valuesEntered = [];
+        positionEntered = [];
+        prices = [];
+        totalPrice = [0];
+    }
+    
+    res.render("cart", {
+        "position": positionEntered,
+        "amount": valuesEntered,
+        "engineTP": prices,
+        "total": totalPrice,
+        "engineI": engineInfo
+    });
+    
+});//shopcart
 
 
 //admin routes ========================
@@ -347,25 +370,6 @@ app.get("/deleteItem", async function(req,res){
         res.render("admin", {"itemList":itemList});
     }
 });//delete item
-
-// app.get("/dbTest", function(req, res){
-//     let conn = dbConnection();
-    
-//     conn.connect(function(err) {
-//         if (err) throw err;
-//         console.log("Connected!");
-//         // let sql = "SELECT CURDATE()";
-//         let sql = "SELECT * FROM q_author WHERE sex = 'F'";
-    
-//         conn.query(sql, function (err, rows, fields) {
-//             if (err) throw err;
-//             conn.end();
-//             res.send(rows);
-//         });
-        
-//     });//connect
-    
-// });//dbTest
 
 //values in red must be updated
 function dbConnection(){
