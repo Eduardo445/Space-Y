@@ -9,6 +9,12 @@ const session = require('express-session');
 
 app.use(session({ secret: 'any word', cookie: { maxAge: 60000 }}));
 
+let displays = [];
+let valuesEntered = [];
+let positionEntered = [];
+let prices = [];
+let totalPrice = [0];
+
 //routes
 app.get("/", function(req, res){
     
@@ -23,7 +29,7 @@ app.get("/AdminLog-In", function(req, res){
 });//AdminLog-In
 
 app.post("/check", function(req, res){
-    //spacey
+    
     if(req.body.username == "admin" && sha256(req.body.password) == "2bb80d537b1da3e38bd30361aa855686bde0eacd7162fef6a25fe97bf527a25b") {
         req.session.authenticated = true;
         res.send({"check":true});
@@ -35,14 +41,11 @@ app.post("/check", function(req, res){
 
 app.get("/admin", async function(req, res){
     
-    console.log(req.session.authenticated);
-    
     if(!req.session.authenticated){
-        res.render("log-in")
+        res.render("log-in");
     }
     else{
         let itemList = await getItemList();
-        //console.log(itemList);
         res.render("admin", {"itemList":itemList});
     }    
 });//admin
@@ -50,16 +53,9 @@ app.get("/admin", async function(req, res){
 app.get("/logout", function(req, res){
     
     req.session.destroy();
-    
     res.render("log-in");
     
 });//logout
-
-let displays = [];
-let valuesEntered = [];
-let positionEntered = [];
-let prices = [];
-let totalPrice = [0];
 
 app.get("/buildShip", async function(req, res){
     
@@ -90,15 +86,11 @@ app.post("/buildShip", async function(req, res){
     let selectedW = req.body.weight;
     
     if(displays.length != 0) {
-        console.log(displays);
         
         var copyOfDisplays = [...displays];
         var copyOfValues = [...req.body.name];
         
         var price = [0];
-        
-        // console.log(copyOfDisplays[0].length);
-        // console.log(copyOfDisplays.length);
         
         for(var k = 0; k < copyOfDisplays.length; k++) {
             if(copyOfValues[k] != 0) {
@@ -106,20 +98,12 @@ app.post("/buildShip", async function(req, res){
             }
         }
         
-        // console.log(price[0]);
-        
         var copyOfPrice = [...price];
         totalPrice[0] += copyOfPrice[0];
-        
-        // console.log(copyOfPrice[0]);
-        // console.log(totalPrice[0]);
 
         valuesEntered.push(copyOfValues);
         positionEntered.push(copyOfDisplays);
         prices.push(copyOfPrice);
-        // console.log(valuesEntered);
-        // console.log(positionEntered);
-        console.log(prices);
         
     }
     
@@ -168,8 +152,6 @@ app.post("/buildShip", async function(req, res){
         }
     }
 
-    // console.log(displays);
-    
     res.render("build", {
         "materials": materials,
         "prices": enginePrice,
@@ -289,8 +271,15 @@ app.post("/shopcart", async function(req, res){
     
     let engineInfo = await getEngineInfo();
     let deleting = req.body.confirm;
+    let testing = req.body.test;
     
-    console.log(deleting);
+    if(testing > -1) {
+        totalPrice[0] -= prices[testing];
+        displays.splice(testing, 1);
+        valuesEntered.splice(testing, 1);
+        positionEntered.splice(testing, 1);
+        prices.splice(testing, 1);
+    }
     
     if(deleting == 1) {
         displays = [];
@@ -310,25 +299,20 @@ app.post("/shopcart", async function(req, res){
     
 });//shopcart
 
-
 //admin routes ========================
-
-
-
 app.get("/addItem", function(req,res){
     
-    console.log(req.session.authenticated);
-    
     if(!req.session.authenticated){
-        res.render("log-in")
+        res.render("log-in");
     }
     else{
         res.render("addItem");
     }
+    
 });//add item
 
 app.post("/addItem", async function(req, res){
-    //console.log(req.body);
+    
     let rows = await insertItem(req.body);
     let message = "Item was NOT added to the system";
     if(rows.affectedRows > 0){
@@ -341,20 +325,24 @@ app.post("/addItem", async function(req, res){
     }
     
     res.render("addItem", {"message":message});
+    
 });//add item post
 
 app.get("/updateItem", async function(req,res){
+    
     if(!req.session.authenticated){
-        res.render("log-in")
+        res.render("log-in");
     }
     else{
         let itemInfo = await getItemInfo(req.query.engineId);
         console.log(itemInfo);
         res.render("updateItem", {"itemInfo":itemInfo});
     }
+    
 });//update item
 
 app.post("/updateItem", async function(req,res){
+    
     console.log(req.body);
     let rows = await updateItem(req.body);
     let itemInfo = req.body;
@@ -368,6 +356,7 @@ app.post("/updateItem", async function(req,res){
         totalPrice = [0];
     }
     res.render("updateItem", {"message":message, "itemInfo": itemInfo});
+    
 });//update item post
 
 app.get("/deleteItem", async function(req,res){
@@ -375,7 +364,7 @@ app.get("/deleteItem", async function(req,res){
     console.log(req.session.authenticated);
     
     if(!req.session.authenticated){
-        res.render("log-in")
+        res.render("log-in");
     }
     else{
         let rows = await deleteItem(req.query.engineId);
@@ -393,28 +382,11 @@ app.get("/deleteItem", async function(req,res){
         let itemList = await getItemList();
         res.render("admin", {"itemList":itemList});
     }
+    
 });//delete item
 
-//values in red must be updated
-function dbConnection(){
-
-    let conn = mysql.createConnection({
-        host: "cst336db.space",
-        user: "cst336_dbUser5",
-        password: "clmxkg",
-        database:"cst336_db5"
-    });//createConnection
-
-    return conn;
-}
-
-//running server
-app.listen(process.env.PORT, process.env.IP, function(){
-    console.log("Express server is running...");
-});
-
-
 function getItemList(){
+    
     let conn = dbConnection();
     
     return new Promise(function(resolve, reject){
@@ -435,6 +407,7 @@ function getItemList(){
 
 
 function insertItem(body){
+    
     let conn = dbConnection();
     
     return new Promise(function(resolve, reject){
@@ -453,14 +426,16 @@ function insertItem(body){
             
             conn.query(sql, params, function(err, rows, fields){
                 if(err) throw(err);
-                conn.end()
+                conn.end();
                 resolve(rows);
-            })//connect
-        })//connect
-    })//promise
+            });//connect
+        });//connect
+    });//promise
+    
 }
 
 function updateItem(body){
+    
     let conn = dbConnection();
     
     return new Promise(function(resolve, reject){
@@ -478,14 +453,16 @@ function updateItem(body){
             
             conn.query(sql, params, function(err, rows, fields){
                 if(err) throw(err);
-                conn.end()
+                conn.end();
                 resolve(rows);
-            })//connect
-        })//connect
-    })//promise
+            });//connect
+        });//connect
+    });//promise
+    
 }
 
 function getItemInfo(engineId){
+    
     let conn = dbConnection();
     
     return new Promise(function(resolve, reject){
@@ -497,14 +474,16 @@ function getItemInfo(engineId){
             
             conn.query(sql, [engineId], function(err, rows, fields){
                 if(err) throw(err);
-                conn.end()
+                conn.end();
                 resolve(rows[0]);
-            })//connect
-        })//connect
-    })//promise
+            });//connect
+        });//connect
+    });//promise
+    
 }
 
 function deleteItem(engineId){
+    
     let conn = dbConnection();
     
     return new Promise(function(resolve, reject){
@@ -516,14 +495,16 @@ function deleteItem(engineId){
             
             conn.query(sql, [engineId], function(err, rows, fields){
                 if(err) throw(err);
-                conn.end()
+                conn.end();
                 resolve(rows);
-            })//connect
-        })//connect
-    })//promise
+            });//connect
+        });//connect
+    });//promise
+    
 }
 
 app.post("/generateReports", async function(req,res){
+    
     let conn = dbConnection();
     
     let list = await new Promise(function(resolve, reject){
@@ -534,7 +515,7 @@ app.post("/generateReports", async function(req,res){
             let sql = `SELECT * FROM engine`;
     
         
-           console.log("SQL:", sql)
+           console.log("SQL:", sql);
            conn.query(sql, function (err, rows, fields) {
               if (err) throw err;
               //res.send(rows);
@@ -550,14 +531,34 @@ app.post("/generateReports", async function(req,res){
     let average = 0;
     
     for (let item of list) {
-        total += item.engineCost
+        total += item.engineCost;
     }
     
-    average = total / stock
+    average = total / stock;
     
     res.render("reports", {
         total,
         stock,
         average
-    })
-})
+    });
+    
+});
+
+//values in red must be updated
+function dbConnection(){
+
+    let conn = mysql.createConnection({
+        host: "cst336db.space",
+        user: "cst336_dbUser5",
+        password: "clmxkg",
+        database:"cst336_db5"
+    });//createConnection
+
+    return conn;
+    
+}
+
+//running server
+app.listen(process.env.PORT, process.env.IP, function(){
+    console.log("Express server is running...");
+});

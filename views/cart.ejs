@@ -8,9 +8,11 @@
         <title>SpaceY</title>
         <script>
                 $(document).ready(function() {
+                    
                     $("#delete").on("click", function(){
                         $("#confirm").val(1);
                     });//click
+                    
                 }); //document.ready
         </script>
         
@@ -41,6 +43,7 @@
                 	        <th>Order Number</th>
                 	        <th>Engines</th>
                 	        <th>Price</th>
+                	        <th>Delete</th>
                     	</tr>
                 	
                     	<% for(var i = 0; i < position.length; i++) { %>
@@ -55,6 +58,7 @@
                             	    <% } %>
                         	    </td>
                         	    <td>$<%= engineTP[i][0] %></td>
+                        	    <td><button class="oneOrder" value="<%= i %>" name="test">Delete</button></td>
                     	    </tr>
                         <% } %>
                     </tbody>
