@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="css/styles.css" rel="stylesheet" type="text/css" />
+        <title>SpaceY</title>
+    </head>
+    <body id="createReportPage">
+        <div class="header">
+        <h1 id="title">Reports</h1> 
+        
+        <hr />
+        <nav>
+            <a class="head" href="/">Home</a>
+            <a class="head" href="/AdminLog-In">Admin Log-In</a>
+            <a class="head" href="/buildShip">Build</a>
+            <a class="head" href="/shopcart">Cart</a>
+        </nav>
+        </div>
+        
+        <br /><br />
+    <div class="reportDisplay">
+        <table style="width:100%">
+            <tr>
+                    <th> Stock </th> 
+                    <th> Average price </th> 
+                    <th> Total </th>
+            </tr>
+            <tr>
+                <td><%= stock %></td> 
+                <td><%= average %></td>
+                <td><%= total %></td>
+            </tr>
+
+        </table>
+     </div>
+         
+       
+         
+    </body>
+</html>
+

@@ -357,26 +357,6 @@ app.get("/deleteItem", async function(req,res){
     }
 });//delete item
 
-// app.get("/dbTest", function(req, res){
-//     let conn = dbConnection();
-    
-//     conn.connect(function(err) {
-//         if (err) throw err;
-//         console.log("Connected!");
-//         // let sql = "SELECT CURDATE()";
-//         let sql = "SELECT * FROM q_author WHERE sex = 'F'";
-    
-//         conn.query(sql, function (err, rows, fields) {
-//             if (err) throw err;
-//             conn.end();
-//             res.send(rows);
-//         });
-        
-//     });//connect
-    
-// });//dbTest
-
-//values in red must be updated
 function dbConnection(){
 
     let conn = mysql.createConnection({
@@ -504,3 +484,41 @@ function deleteItem(engineId){
     })//promise
 }
 
+app.post("/generateReports", async function(req,res){
+    let conn = dbConnection();
+    
+    let list = await new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+            let sql = `SELECT * FROM engine`;
+    
+        
+           console.log("SQL:", sql)
+           conn.query(sql, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise
+    
+    /* Work */
+    let total = 0;
+    let stock = list.length;
+    let average = 0;
+    
+    for (let item of list) {
+        total += item.engineCost
+    }
+    
+    average = total / stock
+    
+    res.render("reports", {
+        total,
+        stock,
+        average
+    })
+})
